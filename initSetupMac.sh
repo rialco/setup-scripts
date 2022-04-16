@@ -8,7 +8,7 @@ printf "==> Installing homebrew \n\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' | tee ~/.zprofile
 
-echo -e "${BLUE}==> Installing essentials (wget, firefox, visual studio code${NC}"
+echo -e "${BLUE}==> Installing essentials (wget, firefox, visual studio code)${NC}"
 
 brew install wget
 if [ ! -d "/Applications/Firefox.app" ]; then
