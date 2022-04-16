@@ -8,7 +8,7 @@ printf "==> Installing homebrew \n\n"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' | tee ~/.zprofile
 
-echo -e "${BLUE}==> Installing essentials (wget, firefox, visual studio code, zsh syntax highlight & auto-suggestions)${NC}"
+echo -e "${BLUE}==> Installing essentials (wget, firefox, visual studio code${NC}"
 
 brew install wget
 if [ ! -d "/Applications/Firefox.app" ]; then
@@ -21,6 +21,38 @@ if [ ! -d "/Applications/Visual Studio Code.app" ]; then
 else
 	echo "Visual studio code is already installed";
 fi
+
+echo "${BLUE}==> Do you want to install Oh my zsh, zsh syntax highlight & auto-suggestions?${NC}"
+
+select yn in "Yes" "No"; 
+do
+    case $yn in
+        Yes)
+		sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+		echo "Finished installing Oh my zsh";
+		echo "==> Installing PowerLevel10k";
+		git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k;
+		echo "Powerlevel10k finished installing";
+		echo "==> Installing Syntax Highlighting";
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting;
+		echo "Sytanx highlighting finished installing";
+		echo "==> Installing auto-suggestions";
+		git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions;
+		echo "Auto-suggestions finished installing";
+
+		echo "==> Starting P10K config";
+		p10k configure;
+
+		echo "==> Editing .zshrc file to include recently downloaded changes";
+		sed 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc;
+		sed 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k/powerlevel10k"/' ~/.zshrc;
+		sed 's/# ENABLE_CORRECTION="true"/ENABLE_CORRECTION="true"/' ~/.zshrc;
+		echo 'export EDITOR="code -w"' >> ~/.zshrc;
+		break;;
+		No) 
+		break;;
+    esac
+done
 
 echo -e "${BLUE}==> Do you want to install NVM & add it to PATH?${NC}"
 
