@@ -22,7 +22,7 @@ else
 	echo "Visual studio code is already installed";
 fi
 
-echo "${BLUE}==> Do you want to install Oh my zsh, zsh syntax highlight & auto-suggestions?${NC}"
+echo -e "${BLUE}==> Do you want to install Oh my zsh, zsh syntax highlight & auto-suggestions?${NC}"
 
 select yn in "Yes" "No"; 
 do
